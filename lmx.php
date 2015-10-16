@@ -111,7 +111,15 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
        	}
    	}
 
-	// UNUSED var $owner; function set_owner ($name) { $this->owner = $name; } // test code
+	function display_error($error, $source_function){ // Override this too
+        
+		// purpose: display errors to user.
+		if (strstr($error,"\narr_sql_param:") != FALSE)  // do not display too much data
+			$msg = nl2br($this->clean_out("ERROR: $source_function"));
+		else
+			$msg = nl2br($this->clean_out("Error: $error\nSent From: $source_function"));
+		echo "<div class='lm_error' style='color: red;'>$msg</div>" ;
+	}	// UNUSED var $owner; function set_owner ($name) { $this->owner = $name; } // test code
 }
 	
 ?>
