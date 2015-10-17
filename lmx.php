@@ -94,13 +94,13 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
         	// New Record will not appear if a search value which cannot be found even in new record is keyed in...
 	 	$this->redirect($url, $id);
 
-    }
+	}
 
-    function run(){ // Override this too - allow for "view" to identify readonly form
+	function run(){ // Override this too - allow for "view" to identify readonly form
 
        	// purpose: built-in controller 
 
-       	switch($this->get_action()){
+       		switch($this->get_action()){
            		case "view":          $this->edit();        break; // AARON
            		case "edit":          $this->edit();        break;
            		case "insert":        $this->insert();      break;
@@ -108,7 +108,7 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
            		case "update_grid":   $this->update_grid(); break;
            		case "delete":        $this->delete();      break;
            		default:              $this->index();
-       	}
+       		}
    	}
 
 	function display_error($error, $source_function){ // Override this too
@@ -120,6 +120,21 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
 			$msg = nl2br($this->clean_out("Error: $error\nSent From: $source_function"));
 		echo "<div class='lm_error' style='color: red;'>$msg</div>" ;
 	}	// UNUSED var $owner; function set_owner ($name) { $this->owner = $name; } // test code
+
+	function is_form() { // is it form or grid
+		if ($this->get_action() == 'view' || $this->get_action() == 'edit') return true;
+		return false;
+	}
+
+	function is_form_insert() { // is it form insert
+		if ( $this->is_form() && intval(@$_REQUEST[$this->identity_name]) == 0) return true;
+		return false;
+	}
+	function is_form_update() { // is it form update
+		if ( $this->is_form() && intval(@$_REQUEST[$this->identity_name]) != 0) return true;
+		return false;
+	}
+
 }
 	
 ?>
