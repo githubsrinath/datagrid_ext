@@ -135,6 +135,41 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
 		return false;
 	}
 
+	// requires - https://github.com/jhuckaby/webcamjs
+	// usage - return webcamjs('myid_fieldname', 'data');
+	// if value is blank, unset so no save of changes
+	private static $webcam_init = false;
+	function webcamjs($_id, $_data = '') {
+		if (self::$webcam_init) return 'ERROR: ONLY 1 WEBCAM PER FORM';
+		self::$webcam_init = true;	
+
+		$this->controls_js .= "
+		if (typeof $_id === 'undefined') { 
+			Webcam.set({ width: 320, height: 240 }); Webcam.attach( '#{$_id}_cam' );
+		} else { alert('ID {$_id} Already Used'); }
+		";
+
+		$_style = 'float:left;overflow:hidden;';
+		//$_style = '';
+		return "
+		<div><img src=\"$_data\" width='320' height='240' alt='No Image' style='$_style'></div>&nbsp;
+		<div id='{$_id}_cam' onClick='take_pic()' style='$_style'>
+			<script language='JavaScript'>
+				//Webcam.set({ width: 320, height: 240 }); Webcam.attach( '#{$_id}_cam' );
+				function take_pic() {
+					if ($('#{$_id}_dat').val() == '') {
+						Webcam.snap( function(data_uri) { 
+							$('#{$_id}_dat').val( data_uri ); 
+							//$('#{$_id}_dat').val( data_uri.replace(/^data\:image\/\w+\;base64\,/, '') ); 
+						} ); Webcam.freeze();
+					} else { Webcam.unfreeze(); $('#{$_id}_dat').val(''); }
+				}
+			</script>
+		</div>
+		<input id='{$_id}_dat' name='{$_id}' type='hidden' value=''/>
+		";
+	}
+
 }
 	
 ?>
