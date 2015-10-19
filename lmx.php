@@ -170,6 +170,35 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
 		";
 	}
 
+	// requires - https://github.com/szimek/signature_pad
+	// usage in php - return signature_pad('myid_fieldname', 'my_name', [data optional]);
+	// usage in js - in document ready (echo one time only, if already echoed, do not echo again): echo $lm->controls_js;
+	// if value is blank, unset so no save of changes
+	private static $signature_pad_init = false;
+	function signature_pad($_id, $_name = '', $_data = '') {
+		if (self::$signature_pad_init) return 'ERROR: ONLY 1 SIGNATURE PER FORM';
+		self::$signature_pad_init = true;	
+		if ($_name == '') $_name = $_id;
+		$this->controls_js .= "
+		if (typeof $_id === 'undefined') { 
+			{$_id} = new SignaturePad( $('#{$_id}_pad')[0].querySelector('canvas') );
+			{$_id}.fromDataURL('$_data');
+		} else { alert('ID {$_id} Already Used'); }
+		";
+
+		//if ($_data) $_data = "{$_id}.fromDataURL('$_data');";
+		//if ($_data) $_img = "<img src=\"$_data\" style='border:1px solid black' width='300' height='150' alt='No Image'/>";
+		$str = ''
+			."<button class='btn btn-sm btn-danger' onclick=\"$('#{$_id}_dat').val('');{$_id}.clear();\" type='button' style='float:left;margin-right:8px;margin-bottom:8px;'>Clear</button>"
+			//.$_img
+			."<div id='{$_id}_pad' tabindex='0' onblur=\"$('#{$_id}_dat').val( {$_id}.toDataURL() );\">"
+			.'<canvas style="background:#ddd;"></canvas>'
+			.'</div>'
+			."<input type='hidden' id='{$_id}_dat' name='{$_name}' value='{$_data}'/>"
+			;
+		return $str;
+	}
+
 }
 	
 ?>
