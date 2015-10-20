@@ -199,6 +199,21 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
 		return $str;
 	}
 
+	// requires = https://github.com/xdan/datetimepicker
+	// usage php - return datetime_xdan(column_name, 'yyyy-mm-dd HH:MM');
+	// usage in js - in document ready (echo one time only, if already echoed, do not echo again): echo $lm->controls_js;
+	function datetime_xdan($column_name, $val) {
+		$this->controls_js .= "$('input.lm_{$column_name}').datetimepicker({format:'Y-m-d H:i', step: 30, defaultTime:'10:00', allowBlank: false } );";
+
+		$str = "<div class='input-group'>"
+			."<input class='lm_{$column_name}' type='text' name='$column_name' value='$val' />"
+			."<span class='input-group-btn'><button class='btn btn-default' type='button' onclick=\"$('input.lm_$column_name').val('');\">"
+			."<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>"
+			."</button></span>"
+			."</div>"
+			;
+		return $str;
+	}
 }
 	
 ?>
