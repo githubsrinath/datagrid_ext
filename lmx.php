@@ -24,6 +24,8 @@ var $bs_js = "
 	$('#lm input[type=button]').addClass('btn btn-default btn-sm');
 	$('#lm input[type=submit]').addClass('btn btn-primary btn-sm');
 	$('#lm select').addClass('form-control');
+	$('#lm form select').css({ 'min-width': '0px', width: 'auto', display: 'inline' });
+
 	$('#lm .lm_form input').addClass('form-control');
 	$('#lm .lm_form textarea').addClass('form-control');
 	$('#lm .lm_form input[type=radio]').removeClass('form-control');
@@ -31,7 +33,7 @@ var $bs_js = "
 	//$(\"	input:text[name='_search']\").css({ width: '50%' });
 	$('#lm .lm_search_box').addClass('form-inline');
 
-	$('#lm form .lm_pagination select').css({ 'min-width': '0px', width: 'auto', display: 'inline' });
+	//no need after adding $('#lm form select').css(...) in code above: $('#lm form .lm_pagination select').css({ 'min-width': '0px', width: 'auto', display: 'inline' });
 	//$('#lm form .lm_pagination select').removeClass('form-control');
 ";
 
