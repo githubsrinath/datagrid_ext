@@ -131,12 +131,17 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
 	//	if ( !$lm->is_insert_ui() ) die('Cannot'); // if someone tries something funny
 	//	$lm->return_to_edit_after_insert = false;
 	//	$lm->after_insert_user_function = 'my_after_insert';
-	//	//May need a captcha before insert to prevent misuse
+	//
 	//	function my_after_insert($id){
 	//		if ($id) {
 	//			header('location: http://www.google.com/'); // redirect if insert was successful
 	//			die(''); // need a die
 	//		}
+	//	}
+	//
+	//	$lm->on_insert_user_function = 'my_on_insert';
+	//	function my_on_insert(){
+	//		//TBD Validation,verification,captcha checking (in case someone tries something funny)
 	//	}
 	function is_insert_ui() {
 		if (($this->get_action() == 'edit' || $this->get_action() == 'insert') && intval(@$_REQUEST[$this->identity_name]) == 0) return true;
