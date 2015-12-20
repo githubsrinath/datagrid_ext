@@ -123,6 +123,26 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
 		echo "<div class='lm_error' style='color: red;'>$msg</div>" ;
 	}	// UNUSED var $owner; function set_owner ($name) { $this->owner = $name; } // test code
 
+	//To use lazy mofo as a creation form only ?action=edit
+	//Usage:
+	//	$lm = new LMX($dbh); 
+	//	$lm->table = 'abc';
+	//	$lm->identity_name = 'Id';
+	//	if ( !$lm->is_insert_ui() ) die('Cannot'); // if someone tries something funny
+	//	$lm->return_to_edit_after_insert = false;
+	//	$lm->after_insert_user_function = 'my_after_insert';
+	//	//May need a captcha before insert to prevent misuse
+	//	function my_after_insert($id){
+	//		if ($id) {
+	//			header('location: http://www.google.com/'); // redirect if insert was successful
+	//			die(''); // need a die
+	//		}
+	//	}
+	function is_insert_ui() {
+		if (($this->get_action() == 'edit' || $this->get_action() == 'insert') && intval(@$_REQUEST[$this->identity_name]) == 0) return true;
+		return false;
+	}
+
 	function is_form() { // is it form or grid
 		if ($this->get_action() == 'view' || $this->get_action() == 'edit') return true;
 		return false;
