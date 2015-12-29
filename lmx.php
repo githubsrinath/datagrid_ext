@@ -242,5 +242,11 @@ var $controls_js = ''; // for additional JS controls e.g. signature_pad, etc.
 		return $str;
 	}
 }
-	
+
+// Additional Useful Functions
+function grid_output_checkbox($column_name, $value, $command, $called_from) {
+	if ($value) return '<input type="checkbox" checked disabled />';
+	return '<input type="checkbox" disabled />';
+}
+
 ?>
